@@ -1,0 +1,41 @@
+--UC1-- Create Payroll_Service Database
+create database Payroll_Service;
+use Payroll_Service;
+select database();
+
+--UC2-- employee_payroll table
+Create Table employee_payroll(
+	Id int unsigned NOT NULL AUTO_INCREMENT,
+	Name varchar(150) NOT NULL,
+	Salary Double NOT NULL,
+	start Date NOT NULL,
+      Primary key (id));
+Describe employee_payroll;
+
+--UC3-- Create employee_payroll data as part of CURD Operation
+insert into employee_payroll (Name, Salary, Start) values
+('Bill', 1000000.00, '2018-01-03'),
+('Terisa', 2000000.00, '2019-11-13'),
+('Charlie', 3000000.00, '2020-05-21'),
+
+--UC4-- Retrieve employee_payroll data
+select * from employee_payroll;
+
+--UC5-- Retrieve salary of particular employee and particular date range
+select salary from employee_payroll where Name = 'Bill';
+select * from employee_payroll where Start between cast ('2018-01-01' as date) and GETDATE(NOW);
+
+--UC6-- add Gender to Employee_Payroll Table and Update the Rows to reflect the correct Employee Gender
+alter table employee_payroll add Gender char(1) After name;
+describe employee_payroll;
+update employee_payroll set Gender = 'F' where name 'Terisa';
+update employee_payroll set Gender = 'M' where name 'Bill' or name 'Charlie' ;
+select * from employee_payroll;
+update employee_payroll set salary = 3000000.00 where name 'Terisa';
+
+--UC7-- find sum, average, min, max and number of male and female employees
+select sum(Salary) as sumsalary,Gender from employee_payroll group by Gender;
+select avg(Salary) as avgsalary,Gender from employee_payroll group by Gender; 
+select max(Salary) as maxsalary,Gender from employee_payroll group by Gender; 
+select min(Salary) as minsalary,Gender from employee_payroll group by Gender; 
+select count(Name) as EmployeeCount,Gender from employee_payroll group by Gender;  
